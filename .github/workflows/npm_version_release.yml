@@ -34,7 +34,7 @@ jobs:
           npm test
       - name: Generate new documentation
         run: |
-          npm typedoc:generate
+          npm run typedoc:generate
           git add -f docs
       - name: Generate Changelog
         run: |
