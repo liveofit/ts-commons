@@ -1,5 +1,5 @@
 import chalk, { ChalkInstance } from 'chalk';
-export * as chalk from 'chalk'
+export * as chalk from 'chalk';
 
 /**
  * @interface ILogger
@@ -32,7 +32,7 @@ export interface ILogger {
   /**
    * @default chalk.blueBright
    */
-   titleColor?: ChalkInstance;
+  titleColor?: ChalkInstance;
   /**
    * @default chalk.yellowBright
    */
@@ -67,7 +67,7 @@ export class Logger {
     if (!this.config.logLevels || this.config.logLevels.includes('debug')) {
       typeof data === 'object'
         ? console.debug(this.config.debugColor!(`🐛 [Debug]: ${JSON.stringify(data, null, 2)}`))
-        : console.debug((`🐛 [Debug]: ${data?.toString()}`));
+        : console.debug(`🐛 [Debug]: ${data?.toString()}`);
       this.config.cbs?.debug && this.config.cbs.debug(data);
     }
   }
@@ -81,9 +81,13 @@ export class Logger {
     if (!this.config.logLevels || this.config.logLevels.includes('info')) {
       typeof data === 'object'
         ? console.log(
-            this.config.debugColor!(`ℹ️ [${processName || 'INFO'}]: ${JSON.stringify(data, null, 2)}`),
+            this.config.debugColor!(
+              `ℹ️ [${processName || 'INFO'}]: ${JSON.stringify(data, null, 2)}`,
+            ),
           )
-        : console.log(this.config.debugColor!(`ℹ️  [${processName || 'INFO'}]: ${data?.toString()}`));
+        : console.log(
+            this.config.debugColor!(`ℹ️  [${processName || 'INFO'}]: ${data?.toString()}`),
+          );
     }
     this.config.cbs?.info && this.config.cbs.info(data, processName);
   }

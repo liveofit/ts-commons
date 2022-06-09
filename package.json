@@ -12,10 +12,10 @@
     "lib"
   ],
   "scripts": {
-    "tsc": "tsc",
+    "build": "tsc",
     "lint:fix": "eslint --fix --ignore-path .eslintignore --ext .js,.ts .",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts .",
-    "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|ts|json)\"",
+    "prettier:check": "prettier --check --ignore-path .gitignore \"**/*.+(js|ts|json)\"",
     "prettier:format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
     "test": "NODE_ENV=\"\" jest",
     "test:coverage": "jest --coverage",
