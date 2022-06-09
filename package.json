@@ -1,6 +1,6 @@
 {
   "name": "@liveofit/ts-commons",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Common functions to use across all typescript projects",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
