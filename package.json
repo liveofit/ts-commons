@@ -4,6 +4,7 @@
   "description": "Common functions to use across all typescript projects",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
+  "files": ["./lib/**/*"],
   "engines": {
     "node": ">=14 <=18"
   },
