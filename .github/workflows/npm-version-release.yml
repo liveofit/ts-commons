@@ -65,6 +65,8 @@ jobs:
           node-version: '16'
       - name: Publish
         run: |
+          npm ci
+          npm run rollup
           npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
           npm publish --access public
         env:
