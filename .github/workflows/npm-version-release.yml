@@ -6,8 +6,18 @@ on:
 name: Create Release
 
 jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: monitor
   generate-changelog:
-    name: Generate Changelog
+    name: Generate Changelog and Documentation page
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
