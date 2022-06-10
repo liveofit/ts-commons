@@ -1,6 +1,6 @@
 {
   "name": "@liveofit/ts-commons",
-  "version": "1.1.21",
+  "version": "1.1.22",
   "description": "Common functions to use across all typescript projects",
   "scripts": {
     "rollup": "rollup -c",
