@@ -18,8 +18,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: npm install
       run: npm ci
-    - name: build
-      run: npm run build
+    - name: make package
+      run: npm run rollup
     - name: lint
       run: npm run lint
     - name: prettier

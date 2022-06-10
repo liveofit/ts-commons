@@ -1,16 +1,21 @@
 {
   "compilerOptions": {
+    // Default
     "target": "es5",
-    "module": "commonjs",
-    "lib": ["es2020"],
-    "declaration": true,
-    "outDir": "./lib",
-    "rootDir": "./src",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true
-  },
-  "include": ["src"],
-  "exclude": ["node_modules", "**/__tests__/*"]
+
+    // Added
+    "module": "ESNext",
+    "declaration": true,
+    "allowJs": true,
+    "declarationDir": "types",
+    "sourceMap": true,
+    "outDir": "dist",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "emitDeclarationOnly": true
+  }
 }

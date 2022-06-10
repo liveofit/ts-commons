@@ -1,6 +1,4 @@
-import chalk, { ChalkInstance } from 'chalk';
-export * as chalk from 'chalk';
-
+import colors from 'colors';
 /**
  * @interface ILogger
  * @description Describe attributes to configure the Logger class.
@@ -22,29 +20,29 @@ export interface ILogger {
     success?: (data: any, processName?: string) => any;
   };
   /**
-   * @default chalk.hex('ffa500')
+   * @default colors.magenta
    */
-  debugColor?: ChalkInstance;
+  debugColor?: colors.Color;
   /**
-   * @default chalk.white
+   * @default colors.white
    */
-  infoColor?: ChalkInstance;
+  infoColor?: colors.Color;
   /**
-   * @default chalk.blueBright
+   * @default colors.blue
    */
-  titleColor?: ChalkInstance;
+  titleColor?: colors.Color;
   /**
-   * @default chalk.yellowBright
+   * @default colors.yellow
    */
-  warnColor?: ChalkInstance;
+  warnColor?: colors.Color;
   /**
-   * @default chalk.redBright
+   * @default colors.red
    */
-  errorColor?: ChalkInstance;
+  errorColor?: colors.Color;
   /**
-   * @default chalk.greenBright
+   * @default colors.green
    */
-  successColor?: ChalkInstance;
+  successColor?: colors.Color;
 }
 
 /**
@@ -55,12 +53,12 @@ export class Logger {
   private readonly config: ILogger;
   constructor(config: ILogger) {
     this.config = config;
-    config.debugColor && (this.config.debugColor = chalk.hex('ffa500'));
-    config.titleColor && (this.config.titleColor = chalk.blueBright);
-    config.infoColor && (this.config.infoColor = chalk.white);
-    config.warnColor && (this.config.warnColor = chalk.yellowBright);
-    config.errorColor && (this.config.errorColor = chalk.redBright);
-    config.successColor && (this.config.successColor = chalk.greenBright);
+    !config.debugColor && (this.config.debugColor = colors.magenta);
+    !config.titleColor && (this.config.titleColor = colors.blue);
+    !config.infoColor && (this.config.infoColor = colors.white);
+    !config.warnColor && (this.config.warnColor = colors.yellow);
+    !config.errorColor && (this.config.errorColor = colors.red);
+    !config.successColor && (this.config.successColor = colors.green);
   }
 
   public debug(data: any) {
@@ -93,7 +91,7 @@ export class Logger {
   }
   public title(title: string) {
     if (!this.config.logLevels || this.config.logLevels.includes('log')) {
-      console.log(chalk.blueBright(`👉 ${title}`));
+      console.log(this.config.titleColor!(`👉 ${title}`));
       this.config.cbs?.log && this.config.cbs.log(title);
     }
   }
@@ -101,9 +99,13 @@ export class Logger {
     if (!this.config.logLevels || this.config.logLevels.includes('success')) {
       typeof data === 'object'
         ? console.info(
-            chalk.greenBright(`✅ [${processName || 'SUCCESS'}]: ${JSON.stringify(data, null, 2)}`),
+            this.config.infoColor!(
+              `✅ [${processName || 'SUCCESS'}]: ${JSON.stringify(data, null, 2)}`,
+            ),
           )
-        : console.info(chalk.greenBright(`✅ [${processName || 'SUCCESS'}]: ${data?.toString()}`));
+        : console.info(
+            this.config.successColor!(`✅ [${processName || 'SUCCESS'}]: ${data?.toString()}`),
+          );
       this.config.cbs?.success && this.config.cbs.success(data, processName);
     }
   }
@@ -111,20 +113,23 @@ export class Logger {
     if (!this.config.logLevels || this.config.logLevels.includes('warn')) {
       typeof data === 'object'
         ? console.warn(
-            chalk.yellowBright(
+            this.config.warnColor!(
               `⚠️ [${processName || 'WARNING'}]: ${JSON.stringify(data, null, 2)}`,
             ),
           )
-        : console.warn(chalk.yellowBright(`⚠️ [${processName}]: ${data?.toString()}`));
+        : console.warn(this.config.warnColor!(`⚠️ [${processName}]: ${data?.toString()}`));
     }
     this.config.cbs?.warn && this.config.cbs.warn(data, processName);
   }
   public error(data: any, processName?: string) {
     if (!this.config.logLevels || this.config.logLevels.includes('error')) {
       if (data.stack)
-        console.error(chalk.redBright(`❌ [${processName || 'ERROR'}]: ${data.stack?.toString()}`));
-      if (typeof data === 'object') console.error(chalk.redBright(JSON.stringify(data, null, 2)));
-      else console.error(chalk.redBright(data?.toString()));
+        console.error(
+          this.config.errorColor!(`❌ [${processName || 'ERROR'}]: ${data.stack?.toString()}`),
+        );
+      if (typeof data === 'object')
+        console.error(this.config.errorColor!(JSON.stringify(data, null, 2)));
+      else console.error(this.config.errorColor!(data?.toString()));
     }
     this.config.cbs?.error && this.config.cbs.error(data, processName);
   }
