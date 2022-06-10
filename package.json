@@ -16,7 +16,8 @@
     "test": "NODE_ENV=\"\" jest",
     "test:coverage": "jest --coverage",
     "typedoc:generate": "typedoc --entryPointStrategy expand ./src",
-    "generate-changelog": "conventional-changelog -p eslint -i CHANGELOG.md -s"
+    "generate-changelog": "conventional-changelog -p eslint -i CHANGELOG.md -s",
+    "prepublish": "tsc"
   },
   "repository": {
     "type": "git",
