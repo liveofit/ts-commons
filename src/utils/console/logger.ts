@@ -1,4 +1,4 @@
-import { colorizedPrint, colors, Color } from './colors';
+import { colorizedPrint, Color } from './colors';
 /**
  * @interface ILogger
  * @description Describe attributes to configure the Logger class.
@@ -134,9 +134,3 @@ export class Logger {
     this.config.cbs?.error && this.config.cbs.error(data, processName);
   }
 }
-
-const logger = new Logger({});
-logger.info({ hola: 'chau' }, 'process1');
-logger.debug({ hola: 'chau' });
-logger.success({ hola: 'chau' }, 'process2');
-logger.error({ hola: 'chau' }, 'process3');

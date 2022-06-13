@@ -37,7 +37,5 @@ export const colors = {
 export type Color = keyof typeof colors;
 
 export const colorizedPrint = (data: any, color?: Color) => {
-  console.log(colors.Reset);
-  color ? console.log(color, data) : console.log(data);
-  console.log(colors.Reset);
+  color ? console.log(colors[color], data) : console.log(data);
 };
