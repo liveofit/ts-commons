@@ -47,6 +47,5 @@
   ],
   "types": "dist/index.d.ts",
   "dependencies": {
-    "colors": "^1.4.0"
   }
 }

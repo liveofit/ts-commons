@@ -1,4 +1,4 @@
-import colors from 'colors';
+import { colorizedPrint, colors, Color } from './colors';
 /**
  * @interface ILogger
  * @description Describe attributes to configure the Logger class.
@@ -22,27 +22,27 @@ export interface ILogger {
   /**
    * @default colors.magenta
    */
-  debugColor?: colors.Color;
+  debugColor?: Color;
   /**
    * @default colors.white
    */
-  infoColor?: colors.Color;
+  infoColor?: Color;
   /**
    * @default colors.blue
    */
-  titleColor?: colors.Color;
+  titleColor?: Color;
   /**
    * @default colors.yellow
    */
-  warnColor?: colors.Color;
+  warnColor?: Color;
   /**
    * @default colors.red
    */
-  errorColor?: colors.Color;
+  errorColor?: Color;
   /**
    * @default colors.green
    */
-  successColor?: colors.Color;
+  successColor?: Color;
 }
 
 /**
@@ -53,84 +53,90 @@ export class Logger {
   private readonly config: ILogger;
   constructor(config: ILogger) {
     this.config = config;
-    !config.debugColor && (this.config.debugColor = colors.magenta);
-    !config.titleColor && (this.config.titleColor = colors.blue);
-    !config.infoColor && (this.config.infoColor = colors.white);
-    !config.warnColor && (this.config.warnColor = colors.yellow);
-    !config.errorColor && (this.config.errorColor = colors.red);
-    !config.successColor && (this.config.successColor = colors.green);
+    !config.debugColor && (this.config.debugColor = 'BrightMagenta');
+    !config.titleColor && (this.config.titleColor = 'BrightBlue');
+    !config.infoColor && (this.config.infoColor = 'White');
+    !config.warnColor && (this.config.warnColor = 'BrightYellow');
+    !config.errorColor && (this.config.errorColor = 'BrightRed');
+    !config.successColor && (this.config.successColor = 'BrightGreen');
   }
 
   public debug(data: any) {
-    if (!this.config.logLevels || this.config.logLevels.includes('debug')) {
+    if (!this.config.logLevels || this.config.logLevels?.includes('debug')) {
       typeof data === 'object'
-        ? console.debug(this.config.debugColor!(`🐛 [Debug]: ${JSON.stringify(data, null, 2)}`))
-        : console.debug(`🐛 [Debug]: ${data?.toString()}`);
+        ? colorizedPrint(`🐛 [Debug]: ${JSON.stringify(data, null, 2)}`, this.config.debugColor)
+        : colorizedPrint(`🐛 [Debug]: ${data?.toString()}`, this.config.debugColor);
       this.config.cbs?.debug && this.config.cbs.debug(data);
     }
   }
   public log(data: any) {
-    if (!this.config.logLevels || this.config.logLevels.includes('log')) {
-      console.log(data);
+    if (!this.config.logLevels || this.config.logLevels?.includes('log')) {
+      colorizedPrint(data);
       this.config.cbs?.log && this.config.cbs.log(data);
     }
   }
   public info(data: any, processName?: string) {
-    if (!this.config.logLevels || this.config.logLevels.includes('info')) {
+    if (!this.config.logLevels || this.config.logLevels?.includes('info')) {
       typeof data === 'object'
-        ? console.log(
-            this.config.debugColor!(
-              `ℹ️ [${processName || 'INFO'}]: ${JSON.stringify(data, null, 2)}`,
-            ),
+        ? colorizedPrint(
+            `ℹ️ [${processName || 'INFO'}]: ${JSON.stringify(data, null, 2)}`,
+            this.config.infoColor,
           )
-        : console.log(
-            this.config.debugColor!(`ℹ️  [${processName || 'INFO'}]: ${data?.toString()}`),
+        : colorizedPrint(
+            `ℹ️  [${processName || 'INFO'}]: ${data?.toString()}`,
+            this.config.infoColor,
           );
     }
     this.config.cbs?.info && this.config.cbs.info(data, processName);
   }
   public title(title: string) {
-    if (!this.config.logLevels || this.config.logLevels.includes('log')) {
-      console.log(this.config.titleColor!(`👉 ${title}`));
+    if (!this.config.logLevels || this.config.logLevels?.includes('log')) {
+      colorizedPrint(`👉 ${title}`, this.config.titleColor);
       this.config.cbs?.log && this.config.cbs.log(title);
     }
   }
   public success(data: any, processName?: string) {
-    if (!this.config.logLevels || this.config.logLevels.includes('success')) {
+    if (!this.config.logLevels || this.config.logLevels?.includes('success')) {
       typeof data === 'object'
-        ? console.info(
-            this.config.infoColor!(
-              `✅ [${processName || 'SUCCESS'}]: ${JSON.stringify(data, null, 2)}`,
-            ),
+        ? colorizedPrint(
+            `✅ [${processName || 'SUCCESS'}]: ${JSON.stringify(data, null, 2)}`,
+            this.config.successColor,
           )
-        : console.info(
-            this.config.successColor!(`✅ [${processName || 'SUCCESS'}]: ${data?.toString()}`),
+        : colorizedPrint(
+            `✅ [${processName || 'SUCCESS'}]: ${data?.toString()}`,
+            this.config.successColor,
           );
       this.config.cbs?.success && this.config.cbs.success(data, processName);
     }
   }
   public warn(data: any, processName?: string) {
-    if (!this.config.logLevels || this.config.logLevels.includes('warn')) {
+    if (!this.config.logLevels || this.config.logLevels?.includes('warn')) {
       typeof data === 'object'
-        ? console.warn(
-            this.config.warnColor!(
-              `⚠️ [${processName || 'WARNING'}]: ${JSON.stringify(data, null, 2)}`,
-            ),
+        ? colorizedPrint(
+            `⚠️ [${processName || 'WARNING'}]: ${JSON.stringify(data, null, 2)}`,
+            this.config.warnColor,
           )
-        : console.warn(this.config.warnColor!(`⚠️ [${processName}]: ${data?.toString()}`));
+        : colorizedPrint(`⚠️ [${processName}]: ${data?.toString()}`, this.config.warnColor);
     }
     this.config.cbs?.warn && this.config.cbs.warn(data, processName);
   }
   public error(data: any, processName?: string) {
-    if (!this.config.logLevels || this.config.logLevels.includes('error')) {
+    if (!this.config.logLevels || this.config.logLevels?.includes('error')) {
       if (data.stack)
-        console.error(
-          this.config.errorColor!(`❌ [${processName || 'ERROR'}]: ${data.stack?.toString()}`),
+        colorizedPrint(
+          `❌ [${processName || 'ERROR'}]: ${data.stack?.toString()}`,
+          this.config.errorColor,
         );
       if (typeof data === 'object')
-        console.error(this.config.errorColor!(JSON.stringify(data, null, 2)));
-      else console.error(this.config.errorColor!(data?.toString()));
+        colorizedPrint(JSON.stringify(data, null, 2), this.config.errorColor);
+      else colorizedPrint(data?.toString(), this.config.errorColor);
     }
     this.config.cbs?.error && this.config.cbs.error(data, processName);
   }
 }
+
+const logger = new Logger({});
+logger.info({ hola: 'chau' }, 'process1');
+logger.debug({ hola: 'chau' });
+logger.success({ hola: 'chau' }, 'process2');
+logger.error({ hola: 'chau' }, 'process3');
